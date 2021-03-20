@@ -14,7 +14,7 @@ class Stories extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 200,
-      color: Colors.purple,
+      color: Colors.white,
       child: ListView.builder(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
           scrollDirection: Axis.horizontal,
@@ -83,6 +83,18 @@ class _StoryCard extends StatelessWidget {
                   hasBorder: !story.isViewed,
                 ),
           top: 8,
+          left: 8,
+          right: 8,
+        ),
+        Positioned(
+          child: Text(
+            isAddStory ? 'Add to story' : story.user.name,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          bottom: 8,
           left: 8,
         )
       ],

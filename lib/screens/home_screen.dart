@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/config/palette.dart';
 import 'package:flutter_app/data/data.dart';
+import 'package:flutter_app/models/models.dart';
 import 'package:flutter_app/widgets/circle_button.dart';
 import 'package:flutter_app/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -49,11 +50,16 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(0, 10, 0, 5),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
           sliver: SliverToBoxAdapter(
             child: Stories(currentUser: currentUser, stories: stories),
           ),
-        )
+        ),
+        SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+          final Post post = posts[index];
+          return PostContainer(post: post);
+        }, childCount: posts.length))
       ],
     ));
   }
