@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Palette.scaffold),
-      home: HomeScreen(),
+      home: NavScreen(),
     );
   }
 }
