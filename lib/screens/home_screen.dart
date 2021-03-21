@@ -6,8 +6,22 @@ import 'package:flutter_app/widgets/circle_button.dart';
 import 'package:flutter_app/widgets/widgets.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key key}) : super(key: key);
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TrackingScrollController _trackingScrollController =
+      TrackingScrollController();
+
+  @override
+  void dispose() {
+    _trackingScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +29,23 @@ class HomeScreen extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
           body: Responsive(
-        mobile: _HomeScreenMobile(),
-        desktop: _HomeScreenDesktop(),
+        mobile: _HomeScreenMobile(scrollController: _trackingScrollController),
+        desktop:
+            _HomeScreenDesktop(scrollController: _trackingScrollController),
       )),
     );
   }
 }
 
 class _HomeScreenMobile extends StatelessWidget {
+  final TrackingScrollController scrollController;
+
+  const _HomeScreenMobile({Key key, @required this.scrollController})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: scrollController,
       slivers: [
         SliverAppBar(
           brightness: Brightness.light,
@@ -79,15 +99,29 @@ class _HomeScreenMobile extends StatelessWidget {
 }
 
 class _HomeScreenDesktop extends StatelessWidget {
+  final TrackingScrollController scrollController;
+
+  const _HomeScreenDesktop({Key key, @required this.scrollController})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Flexible(flex: 2, child: Container(color: Colors.orange)),
+        Flexible(
+            flex: 2,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: MoreOptionsList(currentUser: currentUser),
+              ),
+            )),
         Spacer(),
         Container(
           width: 600,
           child: CustomScrollView(
+            controller: scrollController,
             slivers: [
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 10),
@@ -113,7 +147,15 @@ class _HomeScreenDesktop extends StatelessWidget {
           ),
         ),
         Spacer(),
-        Flexible(flex: 2, child: Container(color: Colors.blue)),
+        Flexible(
+            flex: 2,
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: ContactList(users: onlineUsers),
+              ),
+            )),
       ],
     );
   }
